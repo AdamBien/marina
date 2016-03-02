@@ -8,6 +8,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -28,8 +29,12 @@ public class HeadlandsClient {
     public String getString(InjectionPoint ip) {
         Annotated annotated = ip.getAnnotated();
         CacheEntry cacheEntry = annotated.getAnnotation(CacheEntry.class);
-        return resolve(cacheEntry).
-                request().get(String.class);
+        Response response = resolve(cacheEntry).
+                request().get();
+        if (response.getStatus() == 204 && !cacheEntry.defaultValue().isEmpty()) {
+            return cacheEntry.defaultValue();
+        }
+        return response.readEntity(String.class);
     }
 
     WebTarget resolve(CacheEntry cacheEntry) {
