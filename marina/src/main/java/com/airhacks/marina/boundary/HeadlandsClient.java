@@ -17,13 +17,10 @@ import javax.ws.rs.client.WebTarget;
 public class HeadlandsClient {
 
     private Client client;
-    private WebTarget tut;
 
     @PostConstruct
     public void init() {
         this.client = ClientBuilder.newClient();
-        this.tut = this.client.target("http://{host}:{port}/headlands/resources/caches/{cache}/entries/{key}");
-
     }
 
     @Produces
@@ -41,10 +38,17 @@ public class HeadlandsClient {
     }
 
     WebTarget resolve(String host, int port, String cache, String key) {
-        return this.tut.resolveTemplate("host", host).
-                resolveTemplate("port", port).
-                resolveTemplate("cache", cache).
-                resolveTemplate("key", key);
+        StringBuilder builder = new StringBuilder();
+        String uri = builder.append("http://").
+                append(host).
+                append(":").
+                append(port).
+                append("/headlands/resources/caches/").
+                append(cache).
+                append("/entries/").
+                append(key).
+                toString();
+        return this.client.target(uri);
     }
 
     @Produces
