@@ -27,6 +27,7 @@ public class HeadlandsClient {
     }
 
     @Produces
+    @CacheEntry(cache = "-", key = "-")
     public String getString(InjectionPoint ip) {
         Annotated annotated = ip.getAnnotated();
         CacheEntry cacheEntry = annotated.getAnnotation(CacheEntry.class);
@@ -47,6 +48,7 @@ public class HeadlandsClient {
     }
 
     @Produces
+    @CacheEntry(cache = "-", key = "-")
     public long getLong(InjectionPoint ip) {
         String stringValue = getString(ip);
         if (stringValue == null) {
@@ -56,6 +58,7 @@ public class HeadlandsClient {
     }
 
     @Produces
+    @CacheEntry(cache = "-", key = "-")
     public int getInteger(InjectionPoint ip) {
         String stringValue = getString(ip);
         if (stringValue == null) {
@@ -65,6 +68,7 @@ public class HeadlandsClient {
     }
 
     @Produces
+    @CacheEntry(cache = "-", key = "-")
     public boolean getBoolean(InjectionPoint ip) {
         String stringValue = getString(ip);
         if (stringValue == null) {
