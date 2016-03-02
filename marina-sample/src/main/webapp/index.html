@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <p>
+            Create cache "configuration" in headlands
+        </p>
+        <code>
+            curl -i -XPUT -H"Content-type: application/json" -d'{"storeByValue":true}' http://192.168.99.100:8080/headlands/resources/caches/configuration
+        </code>
+        <p>
+            Create entry "msg:duke" in the cache "configuration"
+        </p>
+
+        <code>
+            curl -i -XPUT -d'duke' http://192.168.99.100:8080/headlands/resources/caches/configuration/entries/msg
+        </code>
+        <ul>
+            <li><a href="resources/hello/dynamic">dynamic</a></li>
+            <li><a href="resources/hello/not-existing">not-existing</a></li>
+            <li><a href="resources/hello/not-existing-with-default">not-existing-with-default</a></li>
+        </ul>
+    </body>
+</html>
