@@ -1,6 +1,5 @@
-package com.airhacks.jc2.configuration.boundary;
+package com.airhacks.marina.boundary;
 
-import com.airhacks.marina.boundary.CacheEntry;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -31,10 +30,20 @@ public class HeadlandsClient {
     public String getString(InjectionPoint ip) {
         Annotated annotated = ip.getAnnotated();
         CacheEntry cacheEntry = annotated.getAnnotation(CacheEntry.class);
-        return this.tut.resolveTemplate("host", cacheEntry.host()).
-                resolveTemplate("port", cacheEntry.port()).
-                resolveTemplate("cache", cacheEntry.cache()).resolveTemplate("key", cacheEntry.key()).
+        return resolve(cacheEntry).
                 request().get(String.class);
+    }
+
+    WebTarget resolve(CacheEntry cacheEntry) {
+        return this.resolve(cacheEntry.host(), cacheEntry.port(),
+                cacheEntry.cache(), cacheEntry.key());
+    }
+
+    WebTarget resolve(String host, int port, String cache, String key) {
+        return this.tut.resolveTemplate("host", host).
+                resolveTemplate("port", port).
+                resolveTemplate("cache", cache).
+                resolveTemplate("key", key);
     }
 
     @Produces

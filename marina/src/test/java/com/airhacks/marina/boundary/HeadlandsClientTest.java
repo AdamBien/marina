@@ -15,35 +15,31 @@
  */
 package com.airhacks.marina.boundary;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import javax.enterprise.util.Nonbinding;
-import javax.inject.Qualifier;
+import javax.ws.rs.client.WebTarget;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author airhacks.com
  */
-@Qualifier
-@Target({ElementType.FIELD, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CacheEntry {
+public class HeadlandsClientTest {
 
-    @Nonbinding
-    String key();
+    HeadlandsClient cut;
 
-    @Nonbinding
-    String defaultValue() default "";
+    @Before
+    public void init() {
+        this.cut = new HeadlandsClient();
+        this.cut.init();
+    }
 
-    @Nonbinding
-    String cache();
-
-    @Nonbinding
-    String host() default "headlands";
-
-    @Nonbinding
-    int port() default 8080;
+    @Test
+    public void resolveTemplate() {
+        WebTarget target = this.cut.resolve("localhost", 8080, "configuration", "msg");
+        String actualUri = target.getUri().toString();
+        assertThat(actualUri, is("http://localhost:8080/headlands/resources/caches/configuration/entries/msg"));
+    }
 
 }
