@@ -7,7 +7,8 @@
     </head>
     <body>
         <p>
-            Create cache "configuration" in headlands
+            Create cache "configuration" in headlands. Add marina-sample and headlands containers
+            to the same user defined network. Then "headlands" becomes ping-able.
         </p>
         <code>
             curl -i -XPUT -H"Content-type: application/json" -d'{"storeByValue":true}' http://192.168.99.100:8080/headlands/resources/caches/configuration
@@ -23,6 +24,7 @@
             <li><a href="resources/hello/dynamic">dynamic</a></li>
             <li><a href="resources/hello/not-existing">not-existing</a></li>
             <li><a href="resources/hello/not-existing-with-default">not-existing-with-default</a></li>
+            <li><a href="resources/hello/configuration/msg">dynamic lookup of "msg" in the cache via function</a></li>
         </ul>
     </body>
 </html>
