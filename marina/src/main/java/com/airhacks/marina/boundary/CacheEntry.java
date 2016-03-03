@@ -32,7 +32,7 @@ import javax.inject.Qualifier;
 public @interface CacheEntry {
 
     @Nonbinding
-    String key();
+    String key() default "";
 
     @Nonbinding
     String defaultValue() default "";

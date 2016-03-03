@@ -1,5 +1,6 @@
 package com.airhacks.marina.boundary;
 
+import java.util.function.Function;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -25,7 +26,7 @@ public class HeadlandsClient {
     }
 
     @Produces
-    @CacheEntry(cache = "-", key = "-")
+    @CacheEntry(cache = "-")
     public String getString(InjectionPoint ip) {
         Annotated annotated = ip.getAnnotated();
         CacheEntry cacheEntry = annotated.getAnnotation(CacheEntry.class);
@@ -37,23 +38,34 @@ public class HeadlandsClient {
         return response.readEntity(String.class);
     }
 
+    @Produces
+    @CacheEntry(cache = "-")
+    public Function<String, String> getCache(InjectionPoint ip) {
+        Annotated annotated = ip.getAnnotated();
+        CacheEntry cacheEntry = annotated.getAnnotation(CacheEntry.class);
+        WebTarget target = this.resolve(cacheEntry.host(), cacheEntry.port(), cacheEntry.cache());
+        return (key) -> target.path(key).request().get(String.class);
+
+    }
+
     WebTarget resolve(CacheEntry cacheEntry) {
         return this.resolve(cacheEntry.host(), cacheEntry.port(),
                 cacheEntry.cache(), cacheEntry.key());
     }
 
     WebTarget resolve(String host, int port, String cache, String key) {
+        return resolve(host, port, cache).path(key);
+    }
+
+    WebTarget resolve(String host, int port, String cache) {
         StringBuilder builder = new StringBuilder();
-        String uri = builder.append("http://").
+        String hostUri = builder.append("http://").
                 append(host).
                 append(":").
-                append(port).
-                append("/headlands/resources/caches/").
-                append(cache).
-                append("/entries/").
-                append(key).
-                toString();
-        return this.client.target(uri);
+                append(port).toString();
+        return this.client.target(hostUri + "/headlands/resources/caches/{cache}/entries/").
+                resolveTemplate("cache", cache);
+
     }
 
     @Produces
