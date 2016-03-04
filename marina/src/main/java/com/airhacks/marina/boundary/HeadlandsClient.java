@@ -12,6 +12,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 /**
+ * A remote headlands client which communicates with the headlands node via HTTP
+ * API and exposes the values via injection. This class is meant to be used
+ * indirectly via injection of cache values.
  *
  * @author airhacks.com
  */

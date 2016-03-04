@@ -23,6 +23,7 @@ import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
 
 /**
+ * A required qualifier.
  *
  * @author airhacks.com
  */
@@ -31,18 +32,38 @@ import javax.inject.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CacheEntry {
 
+    /**
+     *
+     * @return a key to fetch a value from the cache
+     */
     @Nonbinding
     String key() default "";
 
+    /**
+     *
+     * @return a value to be returned at cache miss
+     */
     @Nonbinding
     String defaultValue() default "";
 
+    /**
+     *
+     * @return the name of the headlands cache
+     */
     @Nonbinding
     String cache();
 
+    /**
+     *
+     * @return host name or IP address
+     */
     @Nonbinding
     String host() default "headlands";
 
+    /**
+     *
+     * @return port number of the remote service
+     */
     @Nonbinding
     int port() default 8080;
 
